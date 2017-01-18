@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.yousufsohail.ghostcontactbook.dal.DaoSession;
+import com.yousufsohail.ghostcontactbook.dal.UserBean;
 import com.yousufsohail.ghostcontactbook.network.ApiClient;
 import com.yousufsohail.ghostcontactbook.network.GetUserListResponse;
 import com.yousufsohail.ghostcontactbook.network.GhostUserService;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     MyAdapter myAdapter;
     LinearLayoutManager mLayoutManager;
 
+    DaoSession daoSession;
     List<User> users;
 
     @Override
@@ -41,24 +44,28 @@ public class MainActivity extends AppCompatActivity {
         myAdapter = new MyAdapter(users);
         myRecyclerView.setAdapter(myAdapter);
 
+        connectDB();
         getContacts();
+    }
+
+    private void connectDB() {
+        daoSession = ((App) getApplication()).getDaoSession();
+        daoSession.getUserBeanDao();
     }
 
     private void getContacts() {
 
-        //https://randomuser.me/api/?results=5
         Retrofit client = ApiClient.getClient();
         GhostUserService ghostUserService = client.create(GhostUserService.class);
         Call<GetUserListResponse> ghostUserList = ghostUserService.getGhostUserList(50);
-
         ghostUserList.enqueue(new Callback<GetUserListResponse>() {
             @Override
             public void onResponse(Call<GetUserListResponse> call, Response<GetUserListResponse> response) {
-
                 if (response.isSuccessful()) {
+                    Log.d("MainActivity", response.message());
                     users.addAll(response.body().getUsers());
                     myAdapter.notifyDataSetChanged();
-                    Log.d("MainActivity", response.message());
+                    saveUserToDB(users);
                 } else {
                     Log.d("MainActivity", response.errorBody().toString());
                 }
@@ -69,5 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void saveUserToDB(List<User> users) {
+        for (User user : users) {
+            daoSession.insert(new UserBean(user));
+        }
     }
 }
