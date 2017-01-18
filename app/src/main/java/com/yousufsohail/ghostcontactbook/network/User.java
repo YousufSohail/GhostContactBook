@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class User {
 
     @SerializedName("gender")
-    private String gender;
+    public String gender;
 
     @SerializedName("name")
     private UserName name;
@@ -29,24 +29,56 @@ public class User {
     @SerializedName("picture")
     private UserPicture picture;
 
-    private class UserName {
-
-        @SerializedName("title")
-        private String title;
-        @SerializedName("first")
-        private String first;
-        @SerializedName("last")
-        private String last;
+    public String getGender() {
+        return gender;
     }
 
-    private class UserPicture {
+    public UserName getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public String getRegistered() {
+        return registered;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getCell() {
+        return cell;
+    }
+
+    public UserPicture getPicture() {
+        return picture;
+    }
+
+    public class UserName {
+
+        @SerializedName("title")
+        public String title;
+        @SerializedName("first")
+        public String first;
+        @SerializedName("last")
+        public String last;
+    }
+
+    public class UserPicture {
 
         @SerializedName("large")
-        private String large;
+        public String large;
         @SerializedName("medium")
-        private String medium;
+        public String medium;
         @SerializedName("thumbnail")
-        private String thumbnail;
+        public String thumbnail;
 
     }
 }

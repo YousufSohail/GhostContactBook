@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.yousufsohail.ghostcontactbook.dal.MockData;
+import com.yousufsohail.ghostcontactbook.network.User;
 
 import java.util.List;
 
@@ -16,16 +16,16 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter {
 
-    List<MockData.MockItem> mItems;
+    List<User> mUsers;
 
-    public MyAdapter(List<MockData.MockItem> items) {
+    public MyAdapter(List<User> users) {
         super();
-        mItems = items;
+        mUsers = users;
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return mUsers.size();
     }
 
     @Override
@@ -41,9 +41,11 @@ public class MyAdapter extends RecyclerView.Adapter {
         if (holder instanceof MyAdapter.ViewHolder) {
             MyAdapter.ViewHolder myholder = (ViewHolder) holder;
 
-            myholder.mItem = mItems.get(position);
-            myholder.mIdView.setText(mItems.get(position).id);
-            myholder.mContentView.setText(mItems.get(position).content);
+            User user = mUsers.get(position);
+
+            myholder.mUser = user;
+            myholder.mIdView.setText(user.getName().first + " " + user.getName().last);
+            myholder.mContentView.setText(user.getPhone());
         }
     }
 
@@ -51,7 +53,7 @@ public class MyAdapter extends RecyclerView.Adapter {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public MockData.MockItem mItem;
+        public User mUser;
 
         public ViewHolder(View view) {
             super(view);
