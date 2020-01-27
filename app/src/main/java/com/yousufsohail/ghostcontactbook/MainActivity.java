@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Test signing comment
+        // Test signing comment ok
+
         myRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         myRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
